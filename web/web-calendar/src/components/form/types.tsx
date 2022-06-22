@@ -1,5 +1,6 @@
+import { FormEvent, FormEventHandler } from "react";
+
 export interface FormProps {
-    method: string;
-    action: string;
     children: any;
+    onSubmit?: () => void
 }
