@@ -17,8 +17,6 @@ function App() {
   }
 
   async function handleCreateUser() {
-    alert('req')
-
     await api.post('/user/create', {
         name: 'Teste2',
         email: 'pelo@front1',
