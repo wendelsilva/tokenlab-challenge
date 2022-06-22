@@ -16,7 +16,7 @@ routes.post('/user/create', (req, res) => {
         })
 
         if(getUser) {
-            return res.status(409).send('Este email já existe no sistema')
+            return res.status(409).send();
         } else {
             const salt = bcrypt.genSaltSync(10)
             const hash = bcrypt.hashSync(password, salt)
@@ -52,7 +52,9 @@ routes.post('/authenticate', (req, res) => {
             const userPassword = bcrypt.compareSync(password, getUser.password)
 
             if(userPassword) {
-                res.status(201).send('Logado')
+                res.status(201).send()
+            } else {
+                res.status(403).send()
             }
         }
     }
