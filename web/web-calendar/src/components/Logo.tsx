@@ -1,4 +1,8 @@
-function Logo() {
+interface LogoProps {
+  className?: string;
+}
+
+function Logo(props: LogoProps) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -6,6 +10,7 @@ function Logo() {
       height="129"
       fill="none"
       viewBox="0 0 121 129"
+      className={props.className}
     >
       <path
         fill="#FFD369"

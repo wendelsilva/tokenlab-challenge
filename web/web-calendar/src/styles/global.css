@@ -5,3 +5,7 @@
 body {
     @apply font-sans bg-black flex justify-center items-center w-screen h-screen text-white
 }
+
+.input-field {
+    @apply flex flex-col gap-1
+}
