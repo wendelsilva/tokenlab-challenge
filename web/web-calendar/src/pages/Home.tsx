@@ -4,7 +4,6 @@ import { format } from 'date-fns';
 
 import SideBar from '../components/SideBar';
 import Header from '../components/Header'
-import MonthMenu from '../components/MonthMenu';
 import EventForm from '../components/Home/EventForm';
 import Calendar from 'react-calendar';
 
@@ -25,14 +24,6 @@ export default function Home() {
             <div className='flex h-screen'>
                 <SideBar />
                 <main className='flex gap-4 self-end h-full w-full justify-between items-center p-4'>
-                    <MonthMenu />
-                    <Calendar 
-                        value={date} 
-                        onChange={setDate} 
-                        className="bg-gray flex-1 rounded-lg border-none" 
-                        tileClassName="hover:rounded-lg hover:bg-opacity-95 hover:text-black"
-                        onClickDay={cliquei}
-                    />
                     <EventForm />
                     {/* {props.optionSelected === 'calendar' ? 'calendario' : 'outra coisa'} */}
                 </main>

@@ -3,24 +3,14 @@ import { api } from "../../lib/api"
 import { useNavigate } from "react-router-dom"
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { useSuccessMessage } from "../../hooks/useSuccessMessage";
+import { useErrorMessage } from "../../hooks/useErrorMessage";
 
 export default function LoginForm() {
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
 
     const navigate = useNavigate();
-
-    function nullInputs() {
-        toast.error("Preencha todos os campos", {autoClose: 4000});
-    }
-
-    function wrongPassword() {
-        toast.error("Email ou Senha incorretos", {autoClose: 4000})
-    }
-
-    function successMessage() {
-        toast.success("Entrada feita com sucesso", {autoClose: 1500})
-    }
 
     function clearForm() {
         setEmail('')
@@ -31,22 +21,25 @@ export default function LoginForm() {
         event?.preventDefault()
 
         if(email === '' && password === '') {
-           nullInputs();
+            const nullInputs = useErrorMessage('Preencha todos os campos', 4000)
+            return nullInputs;
         } else {
             await api.post('/authenticate', {
                 email: email,
                 password: password,
             }).then((response) => {
                 if(response.status === 201) {
+                    const successMessage = useSuccessMessage('Entrou com sucesso', 1500)
                     setTimeout(() => {
-                        successMessage();
-                    }, 500);
+                        navigate('/home');
+                    }, 1000);
                     clearForm();
-                    navigate('/home');
+                    return successMessage;
                 }
             }).catch(error => {
                 if(error.response.status === 403) {
-                    wrongPassword();
+                    const wrongPasssword = useErrorMessage('Email ou Senha incorretos', 4000)
+                    return wrongPasssword;
                 }
             })
         }

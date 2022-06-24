@@ -15,14 +15,12 @@ model User {
   email    String  @unique
   name     String?
   password String?
-  event    Event[]
 }
 
 model Event {
   id          Int     @id @default(autoincrement())
-  author      User?   @relation(fields: [authorId], references: [id])
-  authorId    Int?
-  initHour    Int
-  endHour     Int
+  date        String  @unique
+  initHour    String
+  endHour     String
   description String?
 }

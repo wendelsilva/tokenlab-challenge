@@ -27,8 +27,8 @@ routes.post('/user/create', (req, res) => {
                     email: email,
                     password: hash,
                 }
-            }) 
-
+            })
+            
             return res.status(201).send();
         } 
     }

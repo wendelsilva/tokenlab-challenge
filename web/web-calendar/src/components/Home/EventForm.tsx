@@ -1,26 +1,93 @@
 import { PencilSimple, Trash, DownloadSimple } from "phosphor-react"
+import { FormEvent, useState } from "react"
+import { useSuccessMessage } from "../../hooks/useSuccessMessage"
+import { api } from "../../lib/api"
 
 export default function EventForm() {
-    const edit = <PencilSimple />
+    const [date, setDate] = useState('')
+    const [initHour, setInitHour] = useState('')
+    const [endHour, setEndHour] = useState('')
+    const [description, setDescription] = useState('')
+
+    async function handleCreateEvent(event: FormEvent) {
+        event?.preventDefault();
+
+        await api.post('/event/create', {
+            date: date,
+            initHour: initHour,
+            endHour: endHour,
+            description: description,
+        }).then(response => {
+            if(response.status === 201) {
+                const succesMessage = useSuccessMessage('Evento criado com sucesso', 1500)
+                return succesMessage;
+            }
+        }).catch((error) => {
+            if(error.response.status === 409) {
+
+            }
+        })
+    }
 
     return (
         <div className='bg-gray rounded-lg px-4 py-2 flex flex-col justify-center items-center gap-8'>
-            <span className="text-2xl">Abril 20, 2022</span>
+            <span className="text-2xl">
+                Abril 20, 2022
+            </span>
             <form className="max-w-[256px] flex flex-col items-center gap-2">
-                <div className="input-field">
-                    <label>Ínicio</label>
-                    <input className="w-60 h-8 rounded-lg pl-2 text-gray" type="text" placeholder="00:00h"/>
+                <div className="flex flex-col gap-1">
+                    <label>
+                        Data
+                    </label>
+                    <input 
+                        className="w-60 h-8 rounded-lg pl-2 text-gray" type="date" placeholder="dd/mm/yyyy" 
+                        value={date} 
+                        onChange={(e) => setDate(e.target.value)}
+                    />
                 </div>
-                <div className="input-field">
-                    <label>Término</label>
-                    <input className="w-60 h-8 rounded-lg pl-2 text-gray" type="text" placeholder="00:00h"/>
-                </div>
-                <div className="input-field">
-                    <label>Descrição</label>
-                    <textarea className="w-60 h-8 rounded-lg pl-2 text-gray resize-y" rows={10} cols={30} placeholder="descrição do evento"/>
+                    <div className="flex flex-col gap-1">
+                        <label>
+                            Ínicio
+                        </label>
+                        <input 
+                            className="w-60 h-8 rounded-lg pl-2 text-gray" 
+                            type="time" 
+                            placeholder="00:00h"
+                            value={initHour} 
+                            onChange={(e) => setInitHour(e.target.value)}
+                        />
+                    </div>
+                    <div className="flex flex-col gap-1">
+                        <label>
+                            Término
+                        </label>
+                        <input 
+                            className="w-60 h-8 rounded-lg pl-2 text-gray" 
+                            type="time" 
+                            placeholder="00:00h"
+                            value={endHour} 
+                            onChange={(e) => setEndHour(e.target.value)}
+                        />
+                    </div>
+                    <div className="flex flex-col gap-1">
+                        <label>
+                            Descrição
+                        </label>
+                        <textarea 
+                            className="w-60 h-8 rounded-lg pl-2 text-gray resize-y" 
+                            rows={10} 
+                            cols={30} 
+                            placeholder="descrição do evento"
+                            value={description} 
+                            onChange={(e) => setDescription(e.target.value)}
+                        />
                 </div>
                 <div className="flex flex-wrap gap-2 items-center justify-center mt-4">
-                    <button type="submit" className="bg-success py-2 px-3 rounded-lg flex gap-1">
+                    <button 
+                        type="submit" 
+                        className="bg-success py-2 px-3 rounded-lg flex gap-1"
+                        onClick={handleCreateEvent}
+                    >
                         <DownloadSimple size={24}/>
                         salvar
                     </button>

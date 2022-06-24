@@ -3,6 +3,8 @@ import { api } from "../../lib/api"
 import { useNavigate } from "react-router-dom"
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { useSuccessMessage } from "../../hooks/useSuccessMessage";
+import { useErrorMessage } from "../../hooks/useErrorMessage";
 
 export default function RegisterForm() {
     const [name, setName] = useState('')
@@ -10,18 +12,6 @@ export default function RegisterForm() {
     const [password, setPassword] = useState('')
 
     const navigate = useNavigate();
-
-    function nullInputs () {
-        toast.error("Preencha todos os campos", {autoClose: 4000});
-    }
-
-    function duplicatedEmail() {
-        toast.error("Email já existente", {autoClose: 4000})
-    }
-
-    function successMessage() {
-        toast.success("Usuário cadastrado com sucesso", {autoClose: 1500})
-    }
 
     function clearForm() {
         setName('')
@@ -33,7 +23,8 @@ export default function RegisterForm() {
         event?.preventDefault();
 
         if(name === '' || email === '' || password === '') {
-            nullInputs();
+            const nullInputs = useErrorMessage('Preencha todos os campos', 4000)
+            return nullInputs;
         } else {
             await api.post('/user/create', {
                 name: name,
@@ -41,15 +32,17 @@ export default function RegisterForm() {
                 password: password,
             }).then((response) => {
                 if(response.status === 201) {
+                    const successMessage = useSuccessMessage('Usuário cadastrado com sucesso', 1500)
                     setTimeout(() => {
                         navigate('/');
                     }, 1500);
                     clearForm();
-                    successMessage();
+                    return successMessage;
                 }
             }).catch(error => {
                 if(error.response.status === 409) {
-                    duplicatedEmail();
+                    const duplicatedEmail = useErrorMessage('Email já existente', 4000)
+                    return duplicatedEmail;
                 }
             })
         }
