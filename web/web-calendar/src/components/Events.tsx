@@ -1,25 +1,26 @@
 import { PencilSimple, Trash } from "phosphor-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useErrorMessage } from "../hooks/useErrorMessage";
 import { useSuccessMessage } from "../hooks/useSuccessMessage";
 import { api } from "../lib/api";
 import swal from 'sweetalert';
+import EventForm from "./Home/EventForm";
 
-
+interface EventsProps {
+    updateEvent: (date: string) => void
+}
 interface GetEvents {
-    allEvents: {
-        id: number;
-        title: string;
-        date: string;
-        initHour: string;
-        endHour: string;
-        description: string;
-    }[]
+    id: number;
+    title: string;
+    date: string;
+    initHour: string;
+    endHour: string;
+    description: string;
 }
 
 
-export default function Events() {
-    const [data, setData] = useState<GetEvents>()
+export default function Events(props: EventsProps) {
+    const [data, setData] = useState<GetEvents[]>([])
 
     const actualDate = formatDate(new Date())
 
@@ -37,13 +38,11 @@ export default function Events() {
         return [year, month, day].join('-');
     }
 
-    async function getEvents() {
-        await api.get('/event/list').then(response => {
-            setData(response.data);
+    useEffect(() => {
+        api.get('/event/list').then(response => {
+            setData(response.data.allEvents);
         })
-    }
-
-    getEvents();
+    }, [])
 
     async function deleteEvent(eventId: number) {
         swal({
@@ -71,11 +70,15 @@ export default function Events() {
         })
     }
 
+    function handleUpdateEvent(date: string) {
+        props.updateEvent(date)
+    }
+
     return (
         <div className="flex flex-1 bg-gray rounded-lg h-full p-8">
             <main className="w-full">
                 <ul className="flex flex-col gap-4">
-                    {data?.allEvents.map(data => {
+                    {data?.map(data => {
                         return (
                             <li key={data.id}>
                                 <div className="flex gap-4 min-w-full items-center">
@@ -102,6 +105,7 @@ export default function Events() {
                                             <PencilSimple 
                                                 size={24} 
                                                 className="text-warning cursor-pointer"
+                                                onClick={() => handleUpdateEvent(data.date)}
                                             />
                                             <Trash size={24} 
                                                 className="text-danger cursor-pointer"

@@ -1,5 +1,6 @@
 import { DownloadSimple, X } from "phosphor-react"
 import { FormEvent, useState } from "react"
+import swal from "sweetalert"
 import { useErrorMessage } from "../../hooks/useErrorMessage"
 import { useSuccessMessage } from "../../hooks/useSuccessMessage"
 import { api } from "../../lib/api"
@@ -39,22 +40,53 @@ export default function EventForm(props: EventFormProps) {
             }
         }).catch((error) => {
             if(error.response.status === 409) {
-                const duplicateEvent = useErrorMessage('Evento não pode ser criado pois já existe um evento neste dia e/ou horário', 4000);
-                setDate('')
-                return duplicateEvent
+                api.post('/event/listOne', {
+                    date: date
+                }).then((response) => {
+                    if(response.status === 201) {
+                        swal({
+                            title: "EDITAR EVENTO",
+                            text: "Um evento nesta data já existe. deseja atualizar o evento existente?",
+                            icon: "warning",
+                            buttons: ['cancelar', 'confirmar'],
+                            dangerMode: true,
+                        }).then((value) => {
+                            if(value) {
+                                api.post('/event/update', {
+                                    title: title,
+                                    date: date,
+                                    initHour: initHour,
+                                    endHour: endHour,
+                                    description: description,
+                                }).then(response => {
+                                    if(response.status === 201) {
+                                        const successMessage = useSuccessMessage('Evento atualizado' , 1500)
+                                        return successMessage
+                                    }
+                                }).catch(error => {
+                                    if(error.response.status === 409) {
+                                        const errorMessage = useErrorMessage('Algo deu errado' , 1500)
+                                        return errorMessage
+                                    }
+                                })
+                            } else {
+                                const duplicateEvent = useErrorMessage('Evento não pode ser criado pois já existe um evento neste dia e/ou horário', 4000)
+                                setDate('')
+                                return duplicateEvent
+                            }
+                        })
+                    }
+                })
             }
         })
     }
 
     return (
         <div className='bg-gray rounded-lg px-4 py-2 flex flex-col justify-center items-center gap-8'>
-            <span className="text-2xl">
-                Abril 20, 2022
-            </span>
             <form className="max-w-[256px] flex flex-col items-center gap-2">
                 <div className="flex flex-col gap-1">
                     <label>
-                        Nome do Evento
+                        Nome do evento
                     </label>
                     <input 
                         className="w-60 h-8 rounded-lg pl-2 text-gray" type="text" placeholder="Entrevista" 
@@ -118,7 +150,7 @@ export default function EventForm(props: EventFormProps) {
                         <DownloadSimple size={24}/>
                         salvar
                     </button>
-                    <button 
+                    <button
                         className="bg-danger py-2 px-3 rounded-lg flex gap-1"
                         onClick={props.showMe}
                     >

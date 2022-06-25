@@ -1,5 +1,6 @@
 import { routes } from "../routes";
 import { prisma } from "../prisma";
+import { Router } from "express";
 
 routes.post('/event/create', (req, res) => {
     const title = req.body.title
@@ -71,6 +72,59 @@ routes.post('/event/delete', (req, res) => {
     }
 
     deleteEvent();
+})
+
+routes.post('/event/listOne', (req, res) => {
+    const date = req.body.date
+
+    async function updateEvent() {
+        const getEvent = await prisma.event.findUnique({
+            where: {
+                date: date
+            }
+        })
+
+        res.status(201).send({getEvent})
+    }
+
+    updateEvent()
+})
+
+routes.post('/event/update', (req, res) => {
+    const date = req.body.date
+    const newDate = req.body.newDate
+    const title = req.body.title
+    const initHour = req.body.initHour
+    const endHour = req.body.endHour
+    const description = req.body.description
+
+    async function updateEvent() {
+        const getEvent = await prisma.event.findUnique({
+            where: {
+                date: date
+            }
+        })
+    
+        if(getEvent) {
+            await prisma.event.update({
+                where: {
+                    date: date
+                },
+                data: {
+                    title: title,
+                    date: newDate,
+                    initHour: initHour,
+                    endHour: endHour,
+                    description: description,
+                }
+        })
+            res.status(201).send()
+        } else {
+            res.status(400).send()
+        }
+    }
+
+    updateEvent()
 })
 
 module.exports = routes;

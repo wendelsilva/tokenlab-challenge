@@ -13,18 +13,24 @@ import { api } from '../lib/api';
 export default function Home() {
     const [showEventForm, setShowEventForm] = useState(false)
 
-    function handleShowEventFrom() {
+    function handleShowEventForm() {
         setShowEventForm(!showEventForm)
     }
 
+    // api.post('/event/update' , {
+    //     date: date,
+    // }).then(response => {
+    //     setUpdateEvent(response.data.getEvent);
+    // })
+
     return (
         <div className='h-screen flex flex-col'>
-            <Header showEvent={handleShowEventFrom}/>
+            <Header showEvent={handleShowEventForm}/>
             <div className='flex h-screen'>
                 <SideBar />
                 <main className='flex gap-4 self-end h-full w-full justify-between items-center p-4'>
-                    {showEventForm ? <EventForm showMe={handleShowEventFrom}/> : ''}
-                    <Events />
+                    {showEventForm ? <EventForm showMe={handleShowEventForm} /> : ''}
+                    <Events updateEvent={handleShowEventForm}/>
                 </main>
             </div>
             <ToastContainer />
