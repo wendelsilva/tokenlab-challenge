@@ -21,6 +21,10 @@ Instalar dependências
 ```
 npm install
 ```
+Dentro da pasta server crie um arquivo .env e cole o seguinte comando
+```
+DATABASE_URL="file:./dev.db"
+```
 Rodar Migrations
 ```
 npx prisma migrate dev
