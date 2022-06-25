@@ -7,7 +7,7 @@ import swal from 'sweetalert';
 import EventForm from "./Home/EventForm";
 
 interface EventsProps {
-    updateEvent: (date: string) => void
+    updateEvent: () => void
 }
 interface GetEvents {
     id: number;
@@ -58,6 +58,9 @@ export default function Events(props: EventsProps) {
                 }).then(response => {
                     if(response.status === 201) {
                         const successMessage = useSuccessMessage('Evento deletado' , 1500)
+                        setTimeout(() => {
+                            window.location.reload()
+                        }, 1500);
                         return successMessage
                     }
                 }).catch(error => {
@@ -70,8 +73,8 @@ export default function Events(props: EventsProps) {
         })
     }
 
-    function handleUpdateEvent(date: string) {
-        props.updateEvent(date)
+    function handleUpdateEvent() {
+        props.updateEvent()
     }
 
     return (
@@ -105,7 +108,7 @@ export default function Events(props: EventsProps) {
                                             <PencilSimple 
                                                 size={24} 
                                                 className="text-warning cursor-pointer"
-                                                onClick={() => handleUpdateEvent(data.date)}
+                                                onClick={handleUpdateEvent}
                                             />
                                             <Trash size={24} 
                                                 className="text-danger cursor-pointer"

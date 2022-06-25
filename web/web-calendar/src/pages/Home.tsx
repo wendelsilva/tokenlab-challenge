@@ -17,12 +17,6 @@ export default function Home() {
         setShowEventForm(!showEventForm)
     }
 
-    // api.post('/event/update' , {
-    //     date: date,
-    // }).then(response => {
-    //     setUpdateEvent(response.data.getEvent);
-    // })
-
     return (
         <div className='h-screen flex flex-col'>
             <Header showEvent={handleShowEventForm}/>

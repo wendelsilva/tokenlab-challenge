@@ -34,8 +34,8 @@ export default function EventForm(props: EventFormProps) {
             if(response.status === 201) {
                 const succesMessage = useSuccessMessage('Evento criado com sucesso', 1500)
                 setTimeout(() => {
-                    props.showMe()
-                }, 500);
+                    window.location.reload()
+                }, 1500);
                 return succesMessage;
             }
         }).catch((error) => {
