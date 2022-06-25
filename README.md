@@ -21,6 +21,10 @@ Instalar dependências
 ```
 npm install
 ```
+Rodar Migrations
+```
+npx prisma migrate dev
+```
 Executar BackEnd
 ```
 npm run dev
