@@ -19,6 +19,7 @@ model User {
 
 model Event {
   id          Int     @id @default(autoincrement())
+  title       String?
   date        String  @unique
   initHour    String
   endHour     String

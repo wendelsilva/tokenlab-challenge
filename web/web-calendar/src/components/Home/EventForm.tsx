@@ -1,9 +1,15 @@
-import { PencilSimple, Trash, DownloadSimple } from "phosphor-react"
+import { DownloadSimple, X } from "phosphor-react"
 import { FormEvent, useState } from "react"
+import { useErrorMessage } from "../../hooks/useErrorMessage"
 import { useSuccessMessage } from "../../hooks/useSuccessMessage"
 import { api } from "../../lib/api"
 
-export default function EventForm() {
+interface EventFormProps {
+    showMe: () => void
+}
+
+export default function EventForm(props: EventFormProps) {
+    const [title, setTitle] = useState('')
     const [date, setDate] = useState('')
     const [initHour, setInitHour] = useState('')
     const [endHour, setEndHour] = useState('')
@@ -12,7 +18,13 @@ export default function EventForm() {
     async function handleCreateEvent(event: FormEvent) {
         event?.preventDefault();
 
+        if(title === '' || date === '' || initHour === '' || endHour === '' || description === '') {
+            const nullInputs = useErrorMessage('Preencha todos os campos', 4000)
+            return nullInputs;
+        }
+
         await api.post('/event/create', {
+            title: title,
             date: date,
             initHour: initHour,
             endHour: endHour,
@@ -20,11 +32,16 @@ export default function EventForm() {
         }).then(response => {
             if(response.status === 201) {
                 const succesMessage = useSuccessMessage('Evento criado com sucesso', 1500)
+                setTimeout(() => {
+                    props.showMe()
+                }, 500);
                 return succesMessage;
             }
         }).catch((error) => {
             if(error.response.status === 409) {
-
+                const duplicateEvent = useErrorMessage('Evento não pode ser criado pois já existe um evento neste dia e/ou horário', 4000);
+                setDate('')
+                return duplicateEvent
             }
         })
     }
@@ -35,6 +52,16 @@ export default function EventForm() {
                 Abril 20, 2022
             </span>
             <form className="max-w-[256px] flex flex-col items-center gap-2">
+                <div className="flex flex-col gap-1">
+                    <label>
+                        Nome do Evento
+                    </label>
+                    <input 
+                        className="w-60 h-8 rounded-lg pl-2 text-gray" type="text" placeholder="Entrevista" 
+                        value={title} 
+                        onChange={(e) => setTitle(e.target.value)}
+                    />
+                </div>
                 <div className="flex flex-col gap-1">
                     <label>
                         Data
@@ -91,13 +118,12 @@ export default function EventForm() {
                         <DownloadSimple size={24}/>
                         salvar
                     </button>
-                    <button type="submit" className="bg-warning py-2 px-3 rounded-lg flex gap-1">
-                        <PencilSimple size={24}/>
-                        editar
-                    </button>
-                    <button type="submit" className="bg-danger py-2 px-3 rounded-lg flex gap-1">
-                        <Trash size={24}/>
-                        remover
+                    <button 
+                        className="bg-danger py-2 px-3 rounded-lg flex gap-1"
+                        onClick={props.showMe}
+                    >
+                        <X size={24}/>
+                        cancelar
                     </button>
                 </div>
             </form>

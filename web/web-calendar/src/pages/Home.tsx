@@ -5,27 +5,25 @@ import { format } from 'date-fns';
 import SideBar from '../components/SideBar';
 import Header from '../components/Header'
 import EventForm from '../components/Home/EventForm';
-import Calendar from 'react-calendar';
 
 import 'react-toastify/dist/ReactToastify.css';
-import 'react-calendar/dist/Calendar.css';
-
+import Events from '../components/Events';
 
 export default function Home() {
-    const [date, setDate] = useState(new Date())
+    const [showEventForm, setShowEventForm] = useState(false)
 
-    function cliquei() {
-        alert(format(date, 'dd/MM/yyyy'))
+    function handleShowEventFrom() {
+        setShowEventForm(!showEventForm)
     }
 
     return (
         <div className='h-screen flex flex-col'>
-            <Header />
+            <Header showEvent={handleShowEventFrom}/>
             <div className='flex h-screen'>
                 <SideBar />
                 <main className='flex gap-4 self-end h-full w-full justify-between items-center p-4'>
-                    <EventForm />
-                    {/* {props.optionSelected === 'calendar' ? 'calendario' : 'outra coisa'} */}
+                    {showEventForm ? <EventForm showMe={handleShowEventFrom}/> : ''}
+                    <Events />
                 </main>
             </div>
             <ToastContainer />
