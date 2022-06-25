@@ -38,7 +38,11 @@ routes.post('/event/create', (req, res) => {
 
 routes.get('/event/list', (req, res) => {
     async function getAllEvents() {
-        const allEvents = await prisma.event.findMany()
+        const allEvents = await prisma.event.findMany({
+            orderBy: {
+                date: "asc"
+            }
+        })
 
         res.send({
             allEvents
