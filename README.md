@@ -14,6 +14,7 @@ Desafio Técnico token lab, o desafio consistiu em um calendário de eventos com
 - [ ] PrismaORM
 - [ ] Sqlite
 
+## BackEnd
 Para executar o backend entre na pasta server e execute os seguintes comandos
 
 Instalar dependências
@@ -28,7 +29,7 @@ Caso queira acessar o backend o prisma disponibiliza um cliente web para editar 
 ```
 npx prisma studio
 ```
-
+## FrontEnd
 Para executar o frontend entre na pasta web/web-calendar e execute os seguintes comandos
 
 Instalar dependências
@@ -39,6 +40,6 @@ Executar FrontEnd
 ```
 npm run dev
 ```
-
+## Notion
 Link para o notion do projeto contendo mais informações
 [Notion do Desafio](https://www.notion.so/Desafio-T-cnico-TokenLab-da40acfc0c53418db281a4d72fac76a2)
