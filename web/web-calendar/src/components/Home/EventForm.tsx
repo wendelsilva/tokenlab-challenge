@@ -61,6 +61,9 @@ export default function EventForm(props: EventFormProps) {
                                 }).then(response => {
                                     if(response.status === 201) {
                                         const successMessage = useSuccessMessage('Evento atualizado' , 1500)
+                                        setTimeout(() => {
+                                            window.location.reload()
+                                        }, 1500);
                                         return successMessage
                                     }
                                 }).catch(error => {
