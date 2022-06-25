@@ -8,6 +8,7 @@ import EventForm from '../components/Home/EventForm';
 
 import 'react-toastify/dist/ReactToastify.css';
 import Events from '../components/Events';
+import { api } from '../lib/api';
 
 export default function Home() {
     const [showEventForm, setShowEventForm] = useState(false)

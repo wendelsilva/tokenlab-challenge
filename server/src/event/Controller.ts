@@ -67,9 +67,7 @@ routes.post('/event/delete', (req, res) => {
             res.status(201).send()
         } else {
             res.status(409).send()
-        }
-
-        
+        }  
     }
 
     deleteEvent();

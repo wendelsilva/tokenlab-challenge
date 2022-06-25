@@ -1,8 +1,10 @@
 import { PencilSimple, Trash } from "phosphor-react";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useErrorMessage } from "../hooks/useErrorMessage";
 import { useSuccessMessage } from "../hooks/useSuccessMessage";
 import { api } from "../lib/api";
+import swal from 'sweetalert';
+
 
 interface GetEvents {
     allEvents: {
@@ -35,24 +37,36 @@ export default function Events() {
         return [year, month, day].join('-');
     }
 
-    useEffect(() => {
-        api.get('/event/list').then(response => {
+    async function getEvents() {
+        await api.get('/event/list').then(response => {
             setData(response.data);
         })
-    }, [data])
+    }
+
+    getEvents();
 
     async function deleteEvent(eventId: number) {
-        await api.post('/event/delete', {
-            eventId: eventId,
-        }).then(response => {
-            if(response.status === 201) {
-                const successMessage = useSuccessMessage('Evento deletado' , 1500)
-                return successMessage
-            }
-        }).catch(error => {
-            if(error.response.status === 409) {
-                const errorMessage = useErrorMessage('Algo deu errado' , 1500)
-                return errorMessage
+        swal({
+            title: "DELETAR EVENTO",
+            text: "Tem certeza que deseja deletar o evento?",
+            icon: "error",
+            buttons: ['cancelar', 'confirmar'],
+            dangerMode: true,
+        }).then((value) => {
+            if(value) {
+                api.post('/event/delete', {
+                    eventId: eventId,
+                }).then(response => {
+                    if(response.status === 201) {
+                        const successMessage = useSuccessMessage('Evento deletado' , 1500)
+                        return successMessage
+                    }
+                }).catch(error => {
+                    if(error.response.status === 409) {
+                        const errorMessage = useErrorMessage('Algo deu errado' , 1500)
+                        return errorMessage
+                    }
+                })
             }
         })
     }
