@@ -19,11 +19,13 @@ interface GetEvents {
 export default function Events() {
     const [data, setData] = useState<GetEvents>()
 
-    function formatDate() {
-        let date = new Date(),
-            month = '' + (date.getMonth() + 1),
-            day = '' + date.getDate(),
-            year = date.getFullYear();
+    const actualDate = formatDate(new Date())
+
+    function formatDate(date: Date) {
+        var d = new Date(date),
+            month = '' + (d.getMonth() + 1),
+            day = '' + d.getDate(),
+            year = d.getFullYear();
     
         if (month.length < 2) 
             month = '0' + month;
@@ -32,8 +34,6 @@ export default function Events() {
     
         return [year, month, day].join('-');
     }
-
-    const actualDate = formatDate.toString()
 
     useEffect(() => {
         api.get('/event/list').then(response => {
@@ -63,14 +63,17 @@ export default function Events() {
                 <ul className="flex flex-col gap-4">
                     {data?.allEvents.map(data => {
                         return (
-                            <li>
+                            <li key={data.id}>
                                 <div className="flex gap-4 min-w-full items-center">
-                                    <span className="text-4xl text-yellow">
+                                    <span className={`
+                                        text-4xl text-yellow
+                                        ${data.date < actualDate ? 'text-opacity-40' : ''}
+                                    `}>
                                         {data.date.split('-')[2]}/{data.date.split('-')[1]}
                                     </span>
                                     <div className={`
-                                        flex justify-between gap-8 items-center flex-1 bg-black rounded-lg px-4 py-2
-                                        ${data.date > actualDate ? 'bg-opacity-75' : ''}
+                                        flex justify-between gap-8 items-center flex-1  rounded-lg px-4 py-2 bg-black
+                                        ${data.date < actualDate ? 'bg-opacity-50' : ''}
                                     `}>
                                         <p className="w-3/4 overflow-hidden">
                                             {data.title} - {data.description}
@@ -78,7 +81,10 @@ export default function Events() {
                                         <p>
                                             {data.initHour} - {data.endHour}
                                         </p>
-                                        <div className="flex gap-4">
+                                        <div className={`
+                                            flex gap-4
+                                            ${data.date < actualDate ? 'hidden' : ''}
+                                        `}>
                                             <PencilSimple 
                                                 size={24} 
                                                 className="text-warning cursor-pointer"
