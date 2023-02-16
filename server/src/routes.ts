@@ -1,9 +1,12 @@
-import express from 'express';
+import express from 'express'
 
-export const routes = express.Router();
+import { UserController } from './controllers/UserController'
 
-routes.get('/', (req, res) => {
-    res.send('Servidor Rodando');
-})
+export const routes = express.Router()
+const userController = new UserController()
+
+routes.get('/', (req, res) => {res.send('server is running')})
+routes.post('/user', userController.create)
+routes.post('/authenticate', userController.authenticate)
 
 
