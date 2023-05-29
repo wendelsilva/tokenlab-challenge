@@ -28,7 +28,7 @@ export default function LoginForm() {
                 email: email,
                 password: password,
             }).then((response) => {
-                if(response.status === 201) {
+                if(response.status === 200) {
                     const successMessage = useSuccessMessage('Entrou com sucesso', 1500)
                     setTimeout(() => {
                         navigate('/home');
@@ -37,7 +37,7 @@ export default function LoginForm() {
                     return successMessage;
                 }
             }).catch(error => {
-                if(error.response.status === 403) {
+                if(error.response.status === 401) {
                     const wrongPasssword = useErrorMessage('Email ou Senha incorretos', 4000)
                     return wrongPasssword;
                 }
@@ -46,7 +46,7 @@ export default function LoginForm() {
       }
 
     return (
-        <form className="flex flex-col justify-center items-center gap-2 mt-4" onSubmit={handleLoginUser}>
+        <form onSubmit={handleLoginUser} className="flex flex-col justify-center items-center gap-2 mt-4" >
             <div className="flex flex-col">
                 <label htmlFor="email" className="text-2xl">
                     Email
