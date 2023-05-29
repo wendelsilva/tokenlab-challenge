@@ -26,7 +26,7 @@ export default function RegisterForm() {
             const nullInputs = useErrorMessage('Preencha todos os campos', 4000)
             return nullInputs;
         } else {
-            await api.post('/user/create', {
+            await api.post('/user', {
                 name: name,
                 email: email,
                 password: password,
