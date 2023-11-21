@@ -5,6 +5,12 @@ import { User } from '../models/User';
 const user = new User();
 
 export class UserController {
+
+    async getUser(req: express.Request, res: express.Response) {
+        const users = await user.getUser()
+        res.status(200).send(users)
+    }
+
     async create(req: express.Request, res: express.Response) {
         const { name, email, password } = req.body
 
@@ -20,7 +26,7 @@ export class UserController {
         }
 
         await user.create(name, email, password)
-        res.status(200).send()
+        res.status(201).send()
     }
 
     async authenticate(req: express.Request, res: express.Response) {

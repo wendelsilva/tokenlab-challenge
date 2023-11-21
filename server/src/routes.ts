@@ -7,6 +7,7 @@ const userController = new UserController()
 
 routes.get('/', (req, res) => {res.send('server is running')})
 routes.post('/user', userController.create)
+routes.get('/user', userController.getUser)
 routes.post('/authenticate', userController.authenticate)
 
 

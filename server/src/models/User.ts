@@ -4,6 +4,16 @@ import bcrypt from 'bcrypt'
 
 export class User {
 
+    async getUser() {
+        try {
+            const users = await prisma.user.findMany()
+
+            return users
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
     async findUser(email: string) {
         try {
             const getUser = await prisma.user.findUnique({
