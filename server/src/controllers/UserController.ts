@@ -31,7 +31,7 @@ export class UserController {
 
     async authenticate(req: express.Request, res: express.Response) {
         const { email, password } = req.body
-
+        
         const authenticateIsValid = await user.authenticate(email, password)
 
         if(authenticateIsValid) {

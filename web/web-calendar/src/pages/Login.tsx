@@ -9,7 +9,7 @@ export default function Login() {
             <span className="text-4xl">Bem-Vindo</span>
             <span>Digite seus dados para Entrar</span>
             <LoginForm />
-            <span><Link className="text-yellow underline cursor-pointer" to="/register">Clique aqui</Link> para Registrar</span>
+            <span><Link className="text-yellow underline cursor-pointer" to="/authenticate">Clique aqui</Link> para Registrar</span>
         </div>
     )
 }
