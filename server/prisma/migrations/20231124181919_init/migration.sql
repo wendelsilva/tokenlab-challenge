@@ -1,6 +1,6 @@
 -- CreateTable
 CREATE TABLE "User" (
-    "id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    "id" TEXT NOT NULL PRIMARY KEY,
     "email" TEXT NOT NULL,
     "name" TEXT,
     "password" TEXT
@@ -8,7 +8,7 @@ CREATE TABLE "User" (
 
 -- CreateTable
 CREATE TABLE "Event" (
-    "id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    "id" TEXT NOT NULL PRIMARY KEY,
     "title" TEXT,
     "date" TEXT NOT NULL,
     "initHour" TEXT NOT NULL,
