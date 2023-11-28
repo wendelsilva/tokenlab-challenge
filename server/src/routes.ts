@@ -14,5 +14,6 @@ routes.get('/user', userController.getUser)
 routes.post('/authenticate', userController.authenticate)
 
 routes.get('/event', eventController.getEvents)
+routes.post('/event', eventController.createEvent)
 
 

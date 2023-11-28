@@ -12,10 +12,10 @@ export class EventController {
     }
 
     // TODO create event controller method
-    // async createEvent(req: express.Request, res: express.Response) {
-    //     const data = req.body
+    async createEvent(req: express.Request, res: express.Response) {
+        const data = req.body
 
-    //     await event.createEvent({data})
-    //     res.status(201).send()
-    // }
+        await event.createEvent(data)
+        res.status(201).send()
+    }
 }
