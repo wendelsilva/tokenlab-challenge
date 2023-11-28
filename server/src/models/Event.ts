@@ -10,7 +10,6 @@ interface EventProps {
 
 export class Event {
 
-    // TODO create event model methods
     async createEvent(event: EventProps) {
 
         try {
@@ -35,6 +34,18 @@ export class Event {
             return events
         } catch (error) {
             console.log(error)
+        }
+    }
+
+    async deleteEvent(eventId: string) {
+        try {
+            await prisma.event.delete({
+                where: {
+                    id: eventId
+                }
+            })
+        } catch (error) {
+            console.log(error);
         }
     }
 }

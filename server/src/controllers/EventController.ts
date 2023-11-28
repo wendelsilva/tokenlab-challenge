@@ -11,11 +11,17 @@ export class EventController {
         res.status(200).send(events)
     }
 
-    // TODO create event controller method
     async createEvent(req: express.Request, res: express.Response) {
         const data = req.body
 
         await event.createEvent(data)
         res.status(201).send()
+    }
+
+    async deleteEvent(req: express.Request, res: express.Response) {
+        const eventId = req.params.id
+
+        await event.deleteEvent(eventId)
+        res.status(200).send()
     }
 }

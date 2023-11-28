@@ -15,5 +15,6 @@ routes.post('/authenticate', userController.authenticate)
 
 routes.get('/event', eventController.getEvents)
 routes.post('/event', eventController.createEvent)
+routes.delete('/event/:id', eventController.deleteEvent)
 
 
